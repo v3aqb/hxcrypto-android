@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">hxcrypto</string>
+    <string name="pre_shared_key">Pre-shared Key</string>
+    <string name="encrypt_with_psk">Encrypt with PSK</string>
+    <string name="encrypt">Encrypt</string>
+    <string name="decrypt">Decrypt</string>
+    <string name="psk_prumpt">Set pre-shared key here</string>
+    <string name="work_area">Work Area</string>
 </resources>
