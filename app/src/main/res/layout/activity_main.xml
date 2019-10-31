@@ -21,5 +21,12 @@
             android:layout_height="wrap_content"
             android:onClick="openPSK"
             android:text="@string/encrypt_with_psk" />
+
+        <Button
+            android:id="@+id/ecdhButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="openECDH"
+            android:text="@string/encrypt_with_ecdh" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

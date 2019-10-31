@@ -22,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
     public void openPSK(View view) {
         startActivity(new Intent(this, pskActivity.class));
     }
+
+    public void openECDH(View view) {
+        startActivity(new Intent(this, ecdhActivity.class));
+    }
     void initPython() {
         if (!Python.isStarted()) {
             Python.start(new AndroidPlatform(this));
