@@ -3,6 +3,7 @@ package com.v3aqb.hxcrypto;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -56,5 +57,17 @@ public class pskActivity extends AppCompatActivity {
     private String getPSK() {
         return this.pskEdit.getText().toString();
     }
+    public void pskShowToggle(View view) {
+        if (getPSK().length() == 0) return;
+        if (null == this.pskEdit.getTransformationMethod()) {
+            this.pskEdit.setTransformationMethod(new PasswordTransformationMethod());
+        }else {
+            this.pskEdit.setTransformationMethod(null);
+        }
+    }
+    public void onSend(View view) {
+        String data = workingText.getText().toString();
+        if (data.length() == 0) return;
+        startActivity(Util.sendTextIntent(this, data));
     }
 }

@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">hxcrypto</string>
-    <string name="pre_shared_key">Pre-shared Key</string>
     <string name="encrypt_with_psk">Encrypt with PSK</string>
+    <string name="encrypt_with_ecdh">Encrypt with ECDH</string>
     <string name="encrypt">Encrypt</string>
     <string name="decrypt">Decrypt</string>
-    <string name="psk_prumpt">Set pre-shared key here</string>
-    <string name="work_area">Work Area</string>
+    <string name="psk_hint">Set pre-shared key here</string>
+    <string name="work_area_hint">Encrypt / Decryt Here</string>
+    <string name="reset_private_key">Reset Private</string>
+    <string name="copy_public_key">Copy PubKey - %1$s</string>
+    <string name="reset_ecdh">Reset ECDH</string>
+    <string name="do_ecdh">Paste and Exchange</string>
+    <string name="show_password">&#128065;</string>
+    <string name="send">Send</string>
+    <string name="send_title">Send to</string>
+    <string name="clipboard_empty">Clipboard is empty</string>
 </resources>
