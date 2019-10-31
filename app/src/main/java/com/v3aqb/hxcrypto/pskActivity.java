@@ -11,9 +11,9 @@ import com.chaquo.python.PyException;
 
 public class pskActivity extends AppCompatActivity {
 
-    private long last_active = System.currentTimeMillis();
     private final String TAG = "pskActivity";
     private EditText workingText;
+    private EditText pskEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,44 +26,35 @@ public class pskActivity extends AppCompatActivity {
                 Util.onViewClick(view);
             }
         });
+        pskEdit = (EditText)findViewById(R.id.pskKey);
     }
     public void encrypt(View view) {
-        if (System.currentTimeMillis() - last_active < 200) return;
-        // read PSK
-        EditText pskKey = (EditText)findViewById(R.id.pskKey);
-        String psk = pskKey.getText().toString();
-
         // read plain text
         String plainText = workingText.getText().toString();
 
         if (plainText.length() == 0) return;
 
-        String cipherText = PSKCipher.encrypt(psk, plainText);
+        String cipherText = PSKCipher.encrypt(this.getPSK(), plainText);
 
         workingText.setText(cipherText);
-        last_active = System.currentTimeMillis();
     }
     public void decrypt(View view) {
-        if (System.currentTimeMillis() - last_active < 200) return;
-        // read PSK
-        EditText pskKey = (EditText)findViewById(R.id.pskKey);
-        String psk = pskKey.getText().toString();
-
         // read cipher text
-        String cipherText = workingText.getText().toString();
+        String data = workingText.getText().toString();
 
-        if (cipherText.length() == 0) return;
+        if (data.length() == 0) return;
 
         try {
-            String plainText = PSKCipher.decrypt(psk, cipherText);
-            if (plainText.length() == 0) {
+            String result = PSKCipher.decrypt(this.getPSK(), data);
+            if (result.length() == 0) {
                 Toast.makeText(this, "decrypt failed", Toast.LENGTH_SHORT).show();
-                return;
-            } else workingText.setText(plainText);
+            } else workingText.setText(result);
         } catch (PyException err) {
             Toast.makeText(this, err.getMessage(), Toast.LENGTH_SHORT).show();
-            return;
         }
-        last_active = System.currentTimeMillis();
+    }
+    private String getPSK() {
+        return this.pskEdit.getText().toString();
+    }
     }
 }
