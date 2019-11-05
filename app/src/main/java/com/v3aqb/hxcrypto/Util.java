@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.View;
 
 public class Util {
-    public static void onViewClick(View view){
+    public static void setViewFocus(View view){
         if(view.isFocused()){
             view.clearFocus();
             view.requestFocus();

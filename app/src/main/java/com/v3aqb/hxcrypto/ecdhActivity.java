@@ -25,6 +25,7 @@ public class ecdhActivity extends AppCompatActivity {
     private EditText workingText;
     private PyObject skey;
     private String other_key;
+    private long last_click = 0;
     private final String TAG = "ecdhActivity";
 
     @Override
@@ -38,7 +39,7 @@ public class ecdhActivity extends AppCompatActivity {
         workingText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Util.onViewClick(view);
+                onViewClick(view);
             }
         });
     }
@@ -101,6 +102,7 @@ public class ecdhActivity extends AppCompatActivity {
         bu.setEnabled(true);
     }
     public void encrypt(View view) {
+        last_click = 0;
         if (null == this.skey) {
             Toast.makeText(this, "Key exchange required.", Toast.LENGTH_SHORT).show();
             return;
@@ -112,6 +114,7 @@ public class ecdhActivity extends AppCompatActivity {
         workingText.setText(result);
     }
     public void decrypt(View view) {
+        last_click = 0;
         if (null == this.skey) {
             Toast.makeText(this, "Key exchange required.", Toast.LENGTH_SHORT).show();
             return;
@@ -132,5 +135,9 @@ public class ecdhActivity extends AppCompatActivity {
         String data = workingText.getText().toString();
         if (data.length() == 0) return;
         startActivity(Util.sendTextIntent(this, data));
+    }
+    private void onViewClick(View view) {
+        if (System.currentTimeMillis() - last_click > 5000) Util.setViewFocus(view);
+        last_click = System.currentTimeMillis();
     }
 }

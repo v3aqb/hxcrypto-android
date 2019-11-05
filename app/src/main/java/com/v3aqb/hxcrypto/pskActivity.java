@@ -15,6 +15,7 @@ public class pskActivity extends AppCompatActivity {
     private final String TAG = "pskActivity";
     private EditText workingText;
     private EditText pskEdit;
+    private long last_click = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +25,14 @@ public class pskActivity extends AppCompatActivity {
         workingText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Util.onViewClick(view);
+                onViewClick(view);
             }
         });
         pskEdit = (EditText)findViewById(R.id.pskKey);
+        // pskEdit.setTransformationMethod(new PasswordTransformationMethod());
     }
     public void encrypt(View view) {
+        last_click = 0;
         // read plain text
         String plainText = workingText.getText().toString();
 
@@ -40,6 +43,7 @@ public class pskActivity extends AppCompatActivity {
         workingText.setText(cipherText);
     }
     public void decrypt(View view) {
+        last_click = 0;
         // read cipher text
         String data = workingText.getText().toString();
 
@@ -69,5 +73,9 @@ public class pskActivity extends AppCompatActivity {
         String data = workingText.getText().toString();
         if (data.length() == 0) return;
         startActivity(Util.sendTextIntent(this, data));
+    }
+    private void onViewClick(View view) {
+        if (System.currentTimeMillis() - last_click > 5000) Util.setViewFocus(view);
+        last_click = System.currentTimeMillis();
     }
 }
