@@ -74,8 +74,7 @@ public class ecdhActivity extends AppCompatActivity {
     public void doExchange(View view) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         if (!(clipboard.hasPrimaryClip())) {
-            String temp = getResources().getString(R.string.clipboard_empty);
-            Toast.makeText(this, temp, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.clipboard_empty, Toast.LENGTH_SHORT).show();
             return;
         }
 

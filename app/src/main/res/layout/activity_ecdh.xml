@@ -2,97 +2,113 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ecdhActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/ecdhEncrypt"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="encrypt"
-            android:text="@string/encrypt" />
-
-        <Button
-            android:id="@+id/ecdhDecrypt"
-            style="@style/Widget.AppCompat.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="decrypt"
-            android:text="@string/decrypt" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onSend"
-            android:text="@string/send" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/resetPrivateKeyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="resetPrivateKey"
-        android:text="@string/reset_private_key"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/copyPubkeyButton"
+        style="@android:style/Widget.DeviceDefault.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="copyPubKey"
         android:text="@string/copy_public_key"
+        app:layout_constraintBottom_toTopOf="@+id/doECDHButton"
         app:layout_constraintEnd_toStartOf="@+id/resetPrivateKeyButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/resetEcdhButton"
+        android:id="@+id/resetPrivateKeyButton"
+        style="@android:style/Widget.DeviceDefault.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:onClick="resetPrivateKey"
+        android:text="@string/reset_private_key"
+        app:layout_constraintBaseline_toBaselineOf="@+id/copyPubkeyButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/copyPubkeyButton" />
+
+
+    <Button
+        android:id="@+id/doECDHButton"
+        style="@android:style/Widget.DeviceDefault.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:onClick="doExchange"
+        android:text="@string/do_ecdh"
+        app:layout_constraintBottom_toTopOf="@+id/ecworkingText"
+        app:layout_constraintEnd_toStartOf="@+id/resetEcdhButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/copyPubkeyButton" />
+
+    <Button
+        android:id="@+id/resetEcdhButton"
+        style="@android:style/Widget.DeviceDefault.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
         android:onClick="resetExchange"
         android:text="@string/reset_ecdh"
+        app:layout_constraintBaseline_toBaselineOf="@+id/doECDHButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/resetPrivateKeyButton"
-        app:layout_constraintTop_toBottomOf="@+id/resetPrivateKeyButton" />
+        app:layout_constraintStart_toEndOf="@+id/doECDHButton" />
+
 
     <EditText
         android:id="@+id/ecworkingText"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:ems="10"
+        android:fontFamily="monospace"
         android:gravity="start|top"
         android:hint="@string/work_area_hint"
+        android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:selectAllOnFocus="true"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/ecdhEncrypt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resetEcdhButton" />
+        app:layout_constraintTop_toBottomOf="@+id/doECDHButton" />
+
 
     <Button
-        android:id="@+id/doECDHButton"
+        android:id="@+id/ecdhEncrypt"
+        style="@android:style/Widget.DeviceDefault.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="doExchange"
-        android:text="@string/do_ecdh"
-        app:layout_constraintEnd_toStartOf="@+id/resetEcdhButton"
+        android:layout_marginBottom="16dp"
+        android:onClick="encrypt"
+        android:text="@string/encrypt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ecdhDecrypt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/copyPubkeyButton" />
+        app:layout_constraintTop_toBottomOf="@+id/ecworkingText" />
+
+    <Button
+        android:id="@+id/ecdhDecrypt"
+        style="@android:style/Widget.DeviceDefault.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="decrypt"
+        android:text="@string/decrypt"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ecdhEncrypt"
+        app:layout_constraintEnd_toStartOf="@+id/ecdhSend"
+        app:layout_constraintStart_toEndOf="@+id/ecdhEncrypt" />
+
+    <Button
+        android:id="@+id/ecdhSend"
+        style="@android:style/Widget.DeviceDefault.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="onSend"
+        android:text="@string/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ecdhDecrypt"
+        app:layout_constraintTop_toBottomOf="@id/ecworkingText" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

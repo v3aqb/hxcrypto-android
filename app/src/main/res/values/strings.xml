@@ -6,9 +6,9 @@
     <string name="decrypt">Decrypt</string>
     <string name="psk_hint">Set pre-shared key here</string>
     <string name="work_area_hint">Encrypt / Decryt Here</string>
-    <string name="reset_private_key">Reset Private</string>
+    <string name="reset_private_key">&#x21bb;</string>
     <string name="copy_public_key">Copy PubKey - %1$s</string>
-    <string name="reset_ecdh">Reset ECDH</string>
+    <string name="reset_ecdh">&#x21bb;</string>
     <string name="do_ecdh">Paste and Exchange</string>
     <string name="show_password">&#128065;</string>
     <string name="send">Send</string>
