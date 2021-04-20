@@ -94,12 +94,21 @@ METHOD_SUPPORTED = {
     'aes-128-cfb': (16, 16, False),
     'aes-192-cfb': (24, 16, False),
     'aes-256-cfb': (32, 16, False),
-    # 'aes-128-ctr': (16, 16, False),
-    # 'aes-192-ctr': (24, 16, False),
-    # 'aes-256-ctr': (32, 16, False),
+    'aes-128-ofb': (16, 16, False),
+    'aes-192-ofb': (24, 16, False),
+    'aes-256-ofb': (32, 16, False),
+    'aes-128-ctr': (16, 16, False),
+    'aes-192-ctr': (24, 16, False),
+    'aes-256-ctr': (32, 16, False),
     'camellia-128-cfb': (16, 16, False),
     'camellia-192-cfb': (24, 16, False),
     'camellia-256-cfb': (32, 16, False),
+    'camellia-128-ofb': (16, 16, False),
+    'camellia-192-ofb': (24, 16, False),
+    'camellia-256-ofb': (32, 16, False),
+    'camellia-128-ctr': (16, 16, False),
+    'camellia-192-ctr': (24, 16, False),
+    'camellia-256-ctr': (32, 16, False),
     'rc4-md5': (16, 16, False),
     'chacha20-ietf': (32, 12, False),
     # 'bypass': (16, 16, False),  # for testing only
@@ -125,7 +134,7 @@ def is_aead(method_):
 #         return buf
 
 
-IV_CHECKER = IVChecker(1048576, 3600)
+IV_CHECKER = IVChecker()
 
 
 class Chacha20IETF(object):
@@ -178,6 +187,8 @@ def get_cipher(key, method, op_, iv_):
         mode = modes.CTR(iv_)
     elif method.endswith('cfb'):
         mode = modes.CFB(iv_)
+    elif method.endswith('ofb'):
+        mode = modes.OFB(iv_)
     else:
         raise ValueError('operation mode "%s" not supported!' % method.upper())
 
@@ -215,12 +226,13 @@ class EncryptorStream(object):
 
         self._encryptor = None
         self._decryptor = None
+        self.encrypt_once = self.encrypt
 
     def encrypt(self, data):
         if not data:
             raise BufEmptyError
         if not self._encryptor:
-            while True:
+            for _ in range(5):
                 _len = len(data) + self._iv_len - 2
                 iv_ = struct.pack(">H", _len) + random_string(self._iv_len - 2)
                 try:
@@ -228,6 +240,8 @@ class EncryptorStream(object):
                 except IVError:
                     continue
                 break
+            else:
+                raise IVError("unable to create iv")
             self._encryptor = get_cipher(self.__key, self.method, 1, iv_)
             return iv_ + self._encryptor.update(data)
         return self._encryptor.update(data)
@@ -302,6 +316,7 @@ class AEncryptorAEAD(object):
             self.__key = EVP_BytesToKey(key, self._key_len)
         else:
             self.encrypt = self._encrypt
+        self.encrypt_once = self._encrypt
 
         self._encryptor = None
         self._encryptor_nonce = 0
@@ -325,7 +340,7 @@ class AEncryptorAEAD(object):
             okm += output_block
         return okm[:self._key_len]
 
-    def _encrypt(self, data, associated_data=None, data_len=None):
+    def _encrypt(self, data, associated_data=None, data_len=0):
         '''
         TCP Chunk (after encryption, *ciphertext*)
         +--------------+------------+
@@ -347,7 +362,7 @@ class AEncryptorAEAD(object):
             if self._ctx == b"ss-subkey":
                 _len += self.TAG_LEN + data_len
 
-            while True:
+            for _ in range(5):
                 if self._ctx == b"ss-subkey":
                     iv_ = struct.pack(">H", _len) + random_string(self._iv_len - 2)
                 else:
@@ -357,6 +372,8 @@ class AEncryptorAEAD(object):
                 except IVError:
                     continue
                 break
+            else:
+                raise IVError("unable to create iv")
             _encryptor_skey = self.key_expand(self.__key, iv_)
             self._encryptor = get_aead_cipher(_encryptor_skey, self.method)
             cipher_text = self._encryptor.encrypt(nonce, data, associated_data)

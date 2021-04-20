@@ -12,13 +12,12 @@ import com.chaquo.python.PyException
 import com.chaquo.python.PyObject
 import com.chaquo.python.Python
 
-class ecdhActivity : AppCompatActivity() {
+class ECDHActivity : AppCompatActivity() {
     private var ecc: PyObject? = null
     private var workingText: EditText? = null
     private var skey: PyObject? = null
-    private var other_key: String? = null
-    private var last_click: Long = 0
-    private val TAG = "ecdhActivity"
+    private var otherKey: String? = null
+    private var lastClick: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ecdh)
@@ -41,8 +40,8 @@ class ecdhActivity : AppCompatActivity() {
         val tag = ecc!!.callAttr("b64u_to_hash", get_pubkey_b64u()).toString()
         val cp = findViewById<View>(R.id.copyPubkeyButton) as Button
         cp.text = resources.getString(R.string.copy_public_key, tag)
-        if (null != other_key) {
-            exchange(other_key!!)
+        if (null != otherKey) {
+            exchange(otherKey!!)
         }
     }
 
@@ -76,8 +75,8 @@ class ecdhActivity : AppCompatActivity() {
             Toast.makeText(this, err.message, Toast.LENGTH_SHORT).show()
             return
         }
-        other_key = temp
-        val pubk_hash = ecc!!.callAttr("b64u_to_hash", other_key).toString()
+        otherKey = temp
+        val pubk_hash = ecc!!.callAttr("b64u_to_hash", otherKey).toString()
         val bu = view as Button
         bu.text = pubk_hash
         bu.isEnabled = false
@@ -85,32 +84,32 @@ class ecdhActivity : AppCompatActivity() {
 
     fun resetExchange(view: View?) {
         skey = null
-        other_key = null
+        otherKey = null
         val bu = findViewById<View>(R.id.doECDHButton) as Button
         bu.setText(R.string.do_ecdh)
         bu.isEnabled = true
     }
 
     fun encrypt(view: View?) {
-        last_click = 0
+        lastClick = 0
         if (null == skey) {
             Toast.makeText(this, "Key exchange required.", Toast.LENGTH_SHORT).show()
             return
         }
         val data = workingText!!.text.toString()
-        if (data.length == 0) return
+        if (data.isEmpty()) return
         val result = PSKCipher.encrypt(skey, data)
         workingText!!.setText(result)
     }
 
     fun decrypt(view: View?) {
-        last_click = 0
+        lastClick = 0
         if (null == skey) {
             Toast.makeText(this, "Key exchange required.", Toast.LENGTH_SHORT).show()
             return
         }
         val data = workingText!!.text.toString()
-        if (data.length == 0) return
+        if (data.isEmpty()) return
         try {
             val result = PSKCipher.decrypt(skey, data)
             if (result.length == 0) {
@@ -123,12 +122,12 @@ class ecdhActivity : AppCompatActivity() {
 
     fun onSend(view: View?) {
         val data = workingText!!.text.toString()
-        if (data.length == 0) return
+        if (data.isEmpty()) return
         startActivity(Util.sendTextIntent(this, data))
     }
 
     private fun onViewClick(view: View) {
-        if (System.currentTimeMillis() - last_click > 5000) Util.setViewFocus(view)
-        last_click = System.currentTimeMillis()
+        if (System.currentTimeMillis() - lastClick > 5000) Util.setViewFocus(view)
+        lastClick = System.currentTimeMillis()
     }
 }

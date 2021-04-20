@@ -15,11 +15,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openPSK(view: View?) {
-        startActivity(Intent(this, pskActivity::class.java))
+        startActivity(Intent(this, PSKActivity::class.java))
     }
 
     fun openECDH(view: View?) {
-        startActivity(Intent(this, ecdhActivity::class.java))
+        startActivity(Intent(this, ECDHActivity::class.java))
     }
 
     fun initPython() {

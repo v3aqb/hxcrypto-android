@@ -1,7 +1,7 @@
 hxcrypto-android
 ==============
 
-Provide text messege encrypion.
+Provide text message encryption.
 
 License
 =======
